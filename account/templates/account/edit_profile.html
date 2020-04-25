@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% block title %} Update Profile {% endblock %}
+{% block content %}
+<form action="{% url 'update' %}" method="post">
+    {% csrf_token %}
+    <div class="col-4 offset-md-4 mt-3">
+        {% for field in form %}
+        <div class="form-group">
+            {% if field.errors %}
+                <div class="alert alert-danger">
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+
+            {{ field.label }}
+            {{ field }}
+        </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Question
+{% endblock %}
+
+{% block content %}
+
+<div class="list-group">
+    {% for question in object_list %}
+    <div class="list-group-item d-flex flex-row mt-3">
+        <div class="col-1 flex-column">
+            <div class="d-flex p-2 justify-content-center">Votes</div>
+            <div class="d-flex p-2 justify-content-center">{{ question.votes }}</div>
+        </div>
+        <span class="col-2 flex-column border border-primary">
+            <div class="d-flex p-2 justify-content-center">Answer</div>
+            <div class="d-flex p-2 justify-content-center">{{ question.answers.count }}</div>
+        </span>
+        <div class="col-9 flex-row">
+            <div class="d-flex p-2 justify-content-between">
+                <a href="{{ question.get_absolute_url }}">
+                    <h5 class="">{{ question.title }}</h5>
+                </a>
+                <small>{{ question.author }}</small>
+            </div>
+            <div class="d-flex p-2 justify-content-between ml-5">
+                <small>
+                    {% for tag in question.tags.all %}
+                    <span class="btn btn-success btn-sm btn-tag ml-1">
+                        {{ tag.name }}
+                    </span>
+                    {% endfor %}
+                </small>
+                <small class="primary">{{ question.date_create }}</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
