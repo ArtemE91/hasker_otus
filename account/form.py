@@ -7,7 +7,7 @@ from .models import Account
 class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ("username", "email", "password", "avatar", )
+        fields = ("username", "email", "password",  "avatar")
 
         widgets = {
             "username": forms.TextInput(attrs={'class': 'form-control'}),
@@ -22,3 +22,13 @@ class AccountForm(forms.ModelForm):
             raise ValidationError('Such username is already registered!')
 
         return new_username
+
+
+class AccountEditForm(forms.ModelForm):
+    class Meta:
+        model = Account
+        fields = ('email', 'avatar')
+
+    widgets = {
+        'email': forms.EmailInput(attrs={'class': 'form-control'}),
+    }

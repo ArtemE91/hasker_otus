@@ -2,7 +2,7 @@
 {% block content %}
 <form action="{% url 'signup' %}" method="post">
     {% csrf_token %}
-    <div class="col-4 offset-md-4 mt-3">
+    <div class="col-6 offset-md-4 mt-3">
         {% for field in form %}
         <div class="form-group">
             {% if field.errors %}

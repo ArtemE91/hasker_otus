@@ -1,6 +1,6 @@
-from django.db import models
-
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.shortcuts import reverse
 
 
 class Account(AbstractUser):
@@ -12,8 +12,7 @@ class Account(AbstractUser):
             return True
         return False
 
-
-
-
+    def get_absolute_url(self):
+        return reverse('account_detail', kwargs={'id': self.id})
 
 

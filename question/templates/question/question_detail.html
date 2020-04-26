@@ -36,7 +36,8 @@
     <form action="{{ object.get_absolute_url }}" method="post">
         {% csrf_token %}
         <div class="list-group-item d-flex flex-column">
-            {{ answer_form }}
+            <h4>Ask a question</h4>
+            {{ answer_form.text }}
             <div class="d-flex justify-content-end mt-2">
                 <button type="submit" class="btn btn-primary col-3 text-white">Answer</button>
             </div>

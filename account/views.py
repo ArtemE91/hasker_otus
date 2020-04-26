@@ -1,9 +1,9 @@
-
-from django.contrib.auth.views import LoginView
-from django.views.generic import CreateView, View
-from django.shortcuts import render
-from .form import AccountForm
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
+from django.views.generic import CreateView, DetailView, UpdateView
+from django.urls import reverse_lazy
+
+from .form import AccountForm, AccountEditForm
 from .models import Account
 
 
@@ -12,13 +12,25 @@ class AccountLoginView(LoginView):
     form_class = AuthenticationForm
 
 
+class AccountLogOut(LogoutView):
+    next = reverse_lazy('question:question_list')
+
+
 class AccountCreateView(CreateView):
     template_name = 'account/signup.html'
     form_class = AccountForm
+    success_url = reverse_lazy('login')
 
 
-class AccountEditView(View):
-    def get(self, request, username):
-        user = Account.objects.get(username=username)
-        bound_form = AccountForm(instance=user)
-        return render(request, 'account/signup.html', context={'form': bound_form})
+class AccountEditView(UpdateView):
+    form_class = AccountEditForm
+    template_name = "account/edit_profile.html"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class AccountDetailView(DetailView):
+    model = Account
+    template_name = "account/detail_profile.html"
+    pk_url_kwarg = "id"

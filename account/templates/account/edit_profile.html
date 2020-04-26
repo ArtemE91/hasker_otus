@@ -1,23 +1,27 @@
 {% extends 'index.html' %}
 {% block title %} Update Profile {% endblock %}
 {% block content %}
-<form action="{% url 'update' %}" method="post">
+<form action="{% url 'account_update' %}" method="post">
     {% csrf_token %}
-    <div class="col-4 offset-md-4 mt-3">
-        {% for field in form %}
-        <div class="form-group">
-            {% if field.errors %}
-                <div class="alert alert-danger">
-                    {{ field.errors }}
-                </div>
-            {% endif %}
+    <div class="card col-8 offset-md-3 mt-4">
+        <div class="card-body">
+            <h4>Settings Profile</h4>
+            {% for field in form %}
+            <div class="form-group">
+                {% if field.errors %}
+                    <div class="alert alert-danger">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
 
-            {{ field.label }}
-            {{ field }}
+                {{ field.label }}
+                {{ field }}
+            </div>
+            {% endfor %}
+            <div class="d-flex justify-content-end mt-2">
+                <button type="submit" class="btn btn-primary">Update</button>
+            </div>
         </div>
-        {% endfor %}
-
-        <button type="submit" class="btn btn-primary">Update</button>
     </div>
 </form>
 {% endblock %}

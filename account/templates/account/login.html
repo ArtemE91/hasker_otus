@@ -2,7 +2,7 @@
 {% block content %}
 <form action="{% url 'login' %}" method="post">
     {% csrf_token %}
-    <div class="col-4 offset-md-4 mt-3">
+    <div class="col-6 offset-md-4 mt-3">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" id="username" name="username">
