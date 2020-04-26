@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    Question
+{% endblock %}
+
+{% block content %}
+
+<div class="list-group">
+    {% for question in object_list %}
+        {% include 'question/includes/question_template.html' %}
+    {% endfor %}
+</div>
+{% endblock %}

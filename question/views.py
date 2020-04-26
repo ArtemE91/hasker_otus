@@ -10,7 +10,13 @@ from .form import QuestionForm
 
 class QuestionList(ListView):
     model = Questions
-    template_name = 'question/questions.html'
+    template_name = 'question/question_list.html'
+
+
+class TagDetail(DetailView):
+    model = Tag
+    template_name = "question/tag_detail.html"
+    pk_url_kwarg = "name"
 
 
 class QuestionDetail(DetailView):
@@ -37,7 +43,7 @@ class QuestionAddView(LoginRequiredMixin, CreateView):
             for tag in tags:
                 question.tags.add(tag)
             return redirect(question.get_absolute_url())
-        return render(request, "question/questions.html", {"form": question_form})
+        return render(request, "question/question_list.html", {"form": question_form})
 
     @staticmethod
     def create_tag(tags):

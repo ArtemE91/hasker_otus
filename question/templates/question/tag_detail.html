@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block title %}
+    {{ tag.name }}
+{% endblock %}
+
+{% block content %}
+<h4>Tag: {{ tag.name }}</h4>
+<div class="list-group">
+    {% for question in object.questions.all %}
+        {% include 'question/includes/question_template.html' %}
+    {% endfor %}
+</div>
+{% endblock %}

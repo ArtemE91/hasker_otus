@@ -17,9 +17,9 @@
         <div class="d-flex p-2 justify-content-between">
             <small>
                 {% for tag in object.tags.all %}
-                <span class="btn btn-success btn-sm btn-tag ml-1">
+                <a href="{{ tag.get_absolute_url }}" class="btn btn-success btn-sm btn-tag ml-1">
                     {{ tag.name }}
-                </span>
+                </a>
                 {% endfor %}
             </small>
             <small class="d-flex p-2">

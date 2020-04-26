@@ -27,12 +27,15 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('tag_detail', kwargs={'name': self.name})
+
 
 class Questions(MessageQA):
     max_tag = 3
     title = models.CharField(max_length=200)
 
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag, blank=True, related_name='questions')
 
     def get_absolute_url(self):
         return reverse('question_detail', kwargs={'id': self.id})
