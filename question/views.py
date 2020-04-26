@@ -4,8 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import (ListView, DetailView,
                                   CreateView)
 
-from .models import Questions, Tag
-from .form import QuestionForm
+from .models import Questions, Tag, Answer
+from .form import QuestionForm, AnswerForm
 
 
 class QuestionList(ListView):
@@ -24,6 +24,22 @@ class QuestionDetail(DetailView):
     template_name = "question/question_detail.html"
     pk_url_kwarg = "id"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['answer_form'] = AnswerForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            Answer.objects.create(
+                text=form.cleaned_data['text'],
+                author=request.user,
+                question=Questions.objects.get(id=kwargs['id'])
+            )
+            redirect(request.path)
+        return redirect(request.path)
+
 
 class QuestionAddView(LoginRequiredMixin, CreateView):
     form_class = QuestionForm
@@ -39,9 +55,11 @@ class QuestionAddView(LoginRequiredMixin, CreateView):
             question = question_form.save(commit=False)
             question.author = request.user
             question.save()
-            tags = self.create_tag(question_form.cleaned_data['tags'])
-            for tag in tags:
-                question.tags.add(tag)
+            tags = question_form.cleaned_data['tags']
+            if tags:
+                tags = self.create_tag(tags)
+                for tag in tags:
+                    question.tags.add(tag)
             return redirect(question.get_absolute_url())
         return render(request, "question/question_list.html", {"form": question_form})
 
@@ -53,5 +71,6 @@ class QuestionAddView(LoginRequiredMixin, CreateView):
             except ObjectDoesNotExist:
                 tag = Tag.objects.create(name=name_tag)
             yield tag
+
 
 

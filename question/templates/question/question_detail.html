@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="list-group">
     <div class="list-group-item d-flex flex-column mt-3">
         <div class="d-flex p-2 justify-content-between col-12">
@@ -23,24 +24,23 @@
                 {% endfor %}
             </small>
             <small class="d-flex p-2">
-                <div class="text-primary">author:</div>
-                {{ object.author }}
+                Author: {{ object.author }}
             </small>
         </div>
     </div>
-<!--    <div class="list-group-item d-flex flex-column">-->
-<!--        Answer-->
-<!--    </div>-->
-    <div class="list-group-item d-flex flex-column">
-        <div class="form-group">
-            <label class="font-weight-bold">Your answer</label>
-            <textarea class="form-control"rows="4"></textarea>
+
+    {% for answer in object.answers.all %}
+        {% include 'question/includes/answer_template.html' %}
+    {% endfor %}
+
+    <form action="{{ object.get_absolute_url }}" method="post">
+        {% csrf_token %}
+        <div class="list-group-item d-flex flex-column">
+            {{ answer_form }}
+            <div class="d-flex justify-content-end mt-2">
+                <button type="submit" class="btn btn-primary col-3 text-white">Answer</button>
+            </div>
         </div>
-        <div class="d-flex justify-content-end">
-            <a class="btn btn-primary col-3 text-white">Answer</a>
-        </div>
-    </div>
+    </form>
 </div>
 {% endblock %}
-
-<!--<hr style="width: 100%; color: grey; height: 0.5px; background-color:grey;">-->
