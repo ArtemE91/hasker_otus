@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import (ListView, DetailView,
-                                  CreateView)
+                                  CreateView, View)
 
 from .models import Questions, Tag, Answer
 from .form import QuestionForm, AnswerForm
@@ -73,4 +73,18 @@ class QuestionAddView(LoginRequiredMixin, CreateView):
             yield tag
 
 
+class ChangeLikeDisView(LoginRequiredMixin, View):
+    http_method_names = ['get', ]
 
+    def get(self, request, *args, **kwargs):
+        id_obj = kwargs['id']
+        type_obj = kwargs['type']
+        action = kwargs['action']
+        if type_obj == 'answer':
+            obj = Answer.objects.get(id=id_obj)
+            path_redirect = obj.question.get_absolute_url()
+        else:
+            obj = Questions.objects.get(id=id_obj)
+            path_redirect = obj.get_absolute_url()
+        obj.vote(request.user, action)
+        return redirect(path_redirect)

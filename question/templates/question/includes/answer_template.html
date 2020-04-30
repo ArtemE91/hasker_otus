@@ -11,5 +11,15 @@
              <small>Date create: {{ answer.date_create }}</small>
              <small>Author: {{ answer.author }}</small>
         </div>
+         <div class="d-flex p-2 justify-content-end">
+             <a href="{% url 'like_dis' id=answer.id type='answer' action='like' %}" role="button"
+                class="btn btn-outline-success btn-sm">
+                 Like {{ answer.like.count }} {{ user.answer.like.count}}
+             </a>
+             <a href="{% url 'like_dis' id=answer.id type='answer' action='dislike' %}"  role="button"
+                class="btn btn-danger btn-outline-danger btn-sm ml-2">
+                 Dislike {{ answer.dislike.count }}
+             </a>
+        </div>
      </div>
  </div>
