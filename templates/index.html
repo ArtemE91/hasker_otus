@@ -25,9 +25,9 @@
                 <a class="navbar-brand" href="{% url 'question_list' %}">Hasker</a>
             </div>
             <div class="col-md-4"></div>
-             <form class="form-inline col-md-4">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
+             <form action="{% url 'search' %}" method="get" class="search form-inline col-md-4">
+                <input class="form-control mr-sm-2" type="search" name="q" placeholder="Search">
+                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
 
             <div class="col-md-2">
@@ -40,12 +40,12 @@
                 {% endif %}
             </div>
         </nav>
-        <div class="row">
-            <div class="col-7 offset-md-1 mt-4">
+        <div class="d-flex flex-row">
+            <div class="col-7 flex-column offset-md-1 mt-5">
                 {% block content %}
                 {% endblock %}
             </div>
-            <div class="col col-4 mt-5">
+            <div class="col-4 flex-column mt-5">
                 <div class="row">
                     <a class="btn btn-primary col-10 text-white" href="{% url 'question_create' %}">Ask</a>
                 </div>
