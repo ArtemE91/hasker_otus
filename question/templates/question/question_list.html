@@ -10,5 +10,8 @@
     {% for question in object_list %}
         {% include 'question/includes/question_template.html' %}
     {% endfor %}
+
+    {% include 'question/includes/paginator.html' %}
+
 </div>
 {% endblock %}

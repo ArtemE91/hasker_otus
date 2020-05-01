@@ -7,8 +7,10 @@
 {% block content %}
 <h4>Tag: {{ tag.name }}</h4>
 <div class="list-group">
-    {% for question in object.questions.all %}
+    {% for question in object.all %}
         {% include 'question/includes/question_template.html' %}
     {% endfor %}
+
+    {% include 'question/includes/paginator.html' with page_obj=page_obj %}
 </div>
 {% endblock %}

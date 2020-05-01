@@ -4,13 +4,35 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import (ListView, DetailView,
                                   CreateView, View)
 from django.db.models import Q, Count, F
+from django.core.paginator import Paginator
+
 from .models import Questions, Tag, Answer
 from .form import QuestionForm, AnswerForm
 
 
-class QuestionList(ListView):
+class QuestionMixin:
+    paginate_by = 20
+
+    class Meta:
+        abstract: True
+
+    def get_related_activities(self, queryset):
+        queryset = self.sort_by_like(queryset)
+        paginator = Paginator(queryset, self.paginate_by)
+        page = self.request.GET.get('page')
+        activities = paginator.get_page(page)
+        return activities
+
+    @staticmethod
+    def sort_by_like(queryset):
+        return queryset.annotate(likes=Count("like"), dislikes=Count("dislike")
+                                 ,).order_by(F("dislikes") - F("likes"), '-date_create')
+
+
+class QuestionList(ListView, QuestionMixin):
     model = Questions
     template_name = 'question/question_list.html'
+    paginate_by = 30
 
     def get_queryset(self):
         queryset = Questions.objects.all()
@@ -22,34 +44,35 @@ class QuestionList(ListView):
         elif question:
             queryset = queryset.filter(Q(title__contains=question) | Q(text__contains=question))
 
-        queryset = queryset.annotate(
-                likes=Count("like"),
-                dislikes=Count("dislike"),
-            ).order_by(F("dislikes") - F("likes"), "-date_create")
-
+        queryset = self.sort_by_like(queryset)
         return queryset
 
 
-class TagDetail(DetailView):
+class TagDetail(DetailView, QuestionMixin):
     model = Tag
     template_name = "question/tag_detail.html"
     pk_url_kwarg = "name"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        queryset = self.object.questions.all()
+        activities = self.get_related_activities(queryset)
+        context['object'] = activities.object_list
+        context['page_obj'] = activities
+        return context
 
-class QuestionDetail(DetailView):
+
+class QuestionDetail(DetailView, QuestionMixin):
     model = Questions
     template_name = "question/question_detail.html"
     pk_url_kwarg = "id"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        answers = context['object'].answers.all().annotate(
-            likes=Count("like"),
-            dislikes=Count("dislike"),
-        ).order_by(F("dislikes") - F("likes"), '-date_create')
-
-        context['answers'] = answers
+        answers = context['object'].answers.all()
+        activities = self.get_related_activities(answers)
+        context["page_obj"] = activities
+        context['answers'] = activities.object_list
         context['answer_form'] = AnswerForm()
         return context
 

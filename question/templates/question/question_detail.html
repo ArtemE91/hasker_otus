@@ -49,6 +49,8 @@
         {% include 'question/includes/answer_template.html' %}
     {% endfor %}
 
+    {% include 'question/includes/paginator.html' with page_obj=page_obj %}
+
     <form action="{{ object.get_absolute_url }}" method="post">
         {% csrf_token %}
         <div class="list-group-item d-flex flex-column">
