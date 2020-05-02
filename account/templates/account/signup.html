@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 {% block content %}
-<form action="{% url 'signup' %}" method="post">
+<form action="{% url 'signup' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="col-6 offset-md-4 mt-3">
         {% for field in form %}

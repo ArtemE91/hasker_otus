@@ -17,7 +17,10 @@
              </div>
              <div class="d-flex p-2 justify-content-between">
                  <small>Date create: {{ object.date_create }}</small>
-                 <small>Author: {{ object.author }}</small>
+                 <small>
+                     <img src="{{ object.author.get_avatar}}" width="25" height="25" class="mr-3">
+                     Author: {{ object.author }}
+                 </small>
             </div>
              <div class="d-flex p-2 justify-content-between">
                  <div class="d-flex p-2">
@@ -50,7 +53,7 @@
     {% endfor %}
 
     {% include 'question/includes/paginator.html' with page_obj=page_obj %}
-
+    {% if user.is_authenticated %}
     <form action="{{ object.get_absolute_url }}" method="post">
         {% csrf_token %}
         <div class="list-group-item d-flex flex-column">
@@ -61,11 +64,13 @@
             </div>
         </div>
     </form>
+    {% endif %}
 
 </div>
 {% endblock %}
 
 {% block populate %}
+<div class="d-flex justify-content-center col-11"><h4>Trending</h4></div>
     <div class="list-group">
         {% for question in populate_q.all %}
             {% include 'question/includes/populate_question.html' %}

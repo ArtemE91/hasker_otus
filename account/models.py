@@ -2,10 +2,12 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.shortcuts import reverse
 
+from hasker.hasker.settings import MEDIA_URL
+
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return f'user_{instance.user.id}/{filename}'
+    return f'user_{instance.id}/{filename}'
 
 
 class Account(AbstractUser):
@@ -19,5 +21,12 @@ class Account(AbstractUser):
 
     def get_absolute_url(self):
         return reverse('account_detail', kwargs={'id': self.id})
+
+    def get_avatar(self):
+        if not self.avatar.name:
+            return f'{MEDIA_URL}/avatar.png'
+        return f'{MEDIA_URL}/{self.avatar.name}'
+
+
 
 

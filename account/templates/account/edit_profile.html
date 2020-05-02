@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 {% block title %} Update Profile {% endblock %}
 {% block content %}
-<form action="{% url 'account_update' %}" method="post">
+<form action="{% url 'account_update' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="card col-8 offset-md-3 mt-4">
         <div class="card-body">

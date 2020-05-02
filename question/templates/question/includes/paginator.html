@@ -1,5 +1,4 @@
 <nav aria-label="Page navigation example">
-  {% if is_paginated %}
     <ul class="pagination">
     {% if page_obj.has_previous %}
         <li class="page-item">
@@ -35,5 +34,4 @@
                 Next</a></li>
     {% endif %}
   </ul>
-    {% endif %}
 </nav>

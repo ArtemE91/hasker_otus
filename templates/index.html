@@ -30,12 +30,15 @@
                  <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 {% if not user.is_authenticated %}
                 <a role="button" class="btn btn-outline-primary text-white" href="{% url 'login' %}" data-target="#login_modal">Log in</a>
                 <a role="button" class="btn btn-primary" href="{% url 'signup' %}">Sign up</a>
                 {% else %}
-                <a role="button" class="btn btn-outline-primary" href="{{ user.get_absolute_url }}">{{ user }}</a>
+                <a role="button" class="btn btn-outline-primary" href="{{ user.get_absolute_url }}">
+                    <img src="{{ user.get_avatar}}" width="25" height="25" class="mr-3">
+                    {{ user }}
+                </a>
                 <a role="button" class="btn btn-primary" href="{% url 'logout' %}">Log out</a>
                 {% endif %}
             </div>
@@ -46,10 +49,12 @@
                 {% endblock %}
             </div>
             <div class="col-4 flex-column mt-5">
-                <div class="row">
+                {% if user.is_authenticated %}
+                <div class="row mb-2">
                     <a class="btn btn-primary text-white col-11" href="{% url 'question_create' %}">Ask</a>
                 </div>
-                <div class="row mt-3 mr-4">
+                {% endif %}
+                <div class="row mr-4">
                     {% block populate %}
                     {% endblock %}
                 </div>

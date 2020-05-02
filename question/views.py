@@ -64,7 +64,7 @@ class TagDetail(DetailView, QuestionMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        queryset = self.object.questions.all()
+        queryset = context['object'].questions.all()
         activities = self.get_related_activities(queryset)
         context['object'] = activities.object_list
         context['page_obj'] = activities
@@ -76,6 +76,7 @@ class QuestionDetail(DetailView, QuestionMixin):
     model = Questions
     template_name = "question/question_detail.html"
     pk_url_kwarg = "id"
+    login_url = '/account/login/'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -88,6 +89,9 @@ class QuestionDetail(DetailView, QuestionMixin):
         return context
 
     def post(self, request, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect(self.login_url)
+
         form = AnswerForm(request.POST)
         if form.is_valid():
             Answer.objects.create(
@@ -100,6 +104,7 @@ class QuestionDetail(DetailView, QuestionMixin):
 
 
 class QuestionAddView(LoginRequiredMixin, CreateView):
+    login_url = '/account/login/'
     form_class = QuestionForm
     template_name = "question/question_create.html"
 
@@ -132,6 +137,7 @@ class QuestionAddView(LoginRequiredMixin, CreateView):
 
 
 class ChangeLikeDisView(LoginRequiredMixin, View):
+    login_url = '/account/login/'
     http_method_names = ['get', ]
 
     def get(self, request, **kwargs):

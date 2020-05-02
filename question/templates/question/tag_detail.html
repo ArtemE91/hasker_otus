@@ -11,11 +11,12 @@
         {% include 'question/includes/question_template.html' %}
     {% endfor %}
 
-    {% include 'question/includes/paginator.html' with page_obj=page_obj %}
+    {% include 'question/includes/paginator.html' %}
 </div>
 {% endblock %}
 
 {% block populate %}
+<div class="d-flex justify-content-center col-11"><h4>Trending</h4></div>
     <div class="list-group">
         {% for question in populate_q.all %}
             {% include 'question/includes/populate_question.html' %}
