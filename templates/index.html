@@ -47,17 +47,14 @@
             </div>
             <div class="col-4 flex-column mt-5">
                 <div class="row">
-                    <a class="btn btn-primary col-10 text-white" href="{% url 'question_create' %}">Ask</a>
+                    <a class="btn btn-primary text-white col-11" href="{% url 'question_create' %}">Ask</a>
                 </div>
-                <div class="row mt-3">
-                    <h1>Трендинг</h1>
+                <div class="row mt-3 mr-4">
+                    {% block populate %}
+                    {% endblock %}
                 </div>
             </div>
         </div>
-<!--        <div class="row">-->
-<!--            <div class="col-md-8">Вопросы</div>-->
-<!--            <div class="col-md-4">Популярные вопросы</div>-->
-<!--        </div>-->
     </div>
 </body>
 </html>

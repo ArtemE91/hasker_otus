@@ -23,6 +23,10 @@ class QuestionMixin:
         activities = paginator.get_page(page)
         return activities
 
+    def get_context_populate_q(self):
+        populate_q = Questions.objects.all()
+        return self.sort_by_like(populate_q)
+
     @staticmethod
     def sort_by_like(queryset):
         return queryset.annotate(likes=Count("like"), dislikes=Count("dislike")
@@ -33,6 +37,11 @@ class QuestionList(ListView, QuestionMixin):
     model = Questions
     template_name = 'question/question_list.html'
     paginate_by = 30
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['populate_q'] = self.get_context_populate_q()
+        return context
 
     def get_queryset(self):
         queryset = Questions.objects.all()
@@ -59,6 +68,7 @@ class TagDetail(DetailView, QuestionMixin):
         activities = self.get_related_activities(queryset)
         context['object'] = activities.object_list
         context['page_obj'] = activities
+        context['populate_q'] = self.get_context_populate_q()
         return context
 
 
@@ -74,6 +84,7 @@ class QuestionDetail(DetailView, QuestionMixin):
         context["page_obj"] = activities
         context['answers'] = activities.object_list
         context['answer_form'] = AnswerForm()
+        context['populate_q'] = self.get_context_populate_q()
         return context
 
     def post(self, request, **kwargs):

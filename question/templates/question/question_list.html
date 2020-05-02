@@ -15,3 +15,11 @@
 
 </div>
 {% endblock %}
+
+{% block populate %}
+    <div class="list-group">
+        {% for question in populate_q.all %}
+            {% include 'question/includes/populate_question.html' %}
+        {% endfor %}
+    </div>
+{% endblock %}
