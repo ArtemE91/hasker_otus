@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.generic import (ListView, DetailView,
-                                  CreateView, View)
+from django.views.generic import ListView, DetailView, CreateView, View
 from django.db.models import Q, Count, F
 from django.core.paginator import Paginator
 
+from rest_framework.viewsets import ModelViewSet
+
 from .models import Questions, Tag, Answer
 from .form import QuestionForm, AnswerForm
+from .serializers import TagSerializer, QuestionsSerializer, AnswerSerializer
 
 
 class QuestionMixin:
@@ -30,7 +32,7 @@ class QuestionMixin:
     @staticmethod
     def sort_by_like(queryset):
         return queryset.annotate(likes=Count("like"), dislikes=Count("dislike")
-                                 ,).order_by(F("dislikes") - F("likes"), '-date_create')
+                                 , ).order_by(F("dislikes") - F("likes"), '-date_create')
 
 
 class QuestionList(ListView, QuestionMixin):
@@ -152,3 +154,18 @@ class ChangeLikeDisView(LoginRequiredMixin, View):
             path_redirect = obj.get_absolute_url()
         obj.vote(request.user, action)
         return redirect(path_redirect)
+
+
+class TagViewSet(ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+
+class QuestionsViewSet(ModelViewSet):
+    queryset = Questions.objects.all()
+    serializer_class = QuestionsSerializer
+
+
+class AnswerViewSet(ModelViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
