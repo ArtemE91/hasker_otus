@@ -10,5 +10,5 @@ urlpatterns = [
     path('detail/<int:id>/', AccountDetailView.as_view(), name='account_detail'),
     path('update/', AccountEditView.as_view(), name='account_update'),
     path('api/', include(router.urls)),
-    path('api/login/', login),
+    # path('api/login/', login),
 ]

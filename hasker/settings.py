@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'question',
     'rest_framework',
     'rest_auth',
-    'allauth',
-    'rest_framework.authtoken',
+    # 'allauth',
+    # 'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -58,13 +58,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hasker.urls'
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', )
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.TokenAuthentication',
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated', )
+# }
 
 TEMPLATES = [
     {

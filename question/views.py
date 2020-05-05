@@ -4,12 +4,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, DetailView, CreateView, View
 from django.db.models import Q, Count, F
 from django.core.paginator import Paginator
+from rest_framework.decorators import action
 
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import generics
 
 from .models import Questions, Tag, Answer
 from .form import QuestionForm, AnswerForm
-from .serializers import TagSerializer, QuestionsSerializer, AnswerSerializer
+from .serializers import (QuestionsListSerializer, AnswerSerializer,
+                          QuestionDetailSerializer, AnswerCreteSerializer)
 
 
 class QuestionMixin:
@@ -156,16 +159,29 @@ class ChangeLikeDisView(LoginRequiredMixin, View):
         return redirect(path_redirect)
 
 
-class TagViewSet(ModelViewSet):
-    queryset = Tag.objects.all()
-    serializer_class = TagSerializer
+'''############# REST API ################'''
 
 
-class QuestionsViewSet(ModelViewSet):
+class QAMixin:
+    def get_serializer_class(self):
+        if self.action in self.serializers_class:
+            return self.serializers_class[self.action]
+        return self.serializers_class['default']
+
+
+class QuestionsViewSet(QAMixin, ModelViewSet):
     queryset = Questions.objects.all()
-    serializer_class = QuestionsSerializer
+    serializers_class = {
+        'default': QuestionsListSerializer,
+        'retrieve': QuestionDetailSerializer,
+    }
+    http_method_names = ['get', 'post', 'head']
 
 
-class AnswerViewSet(ModelViewSet):
+class AnswerViewSet(QAMixin, ModelViewSet):
     queryset = Answer.objects.all()
-    serializer_class = AnswerSerializer
+    serializers_class = {
+        'default': AnswerSerializer,
+        'create': AnswerCreteSerializer,
+    }
+    http_method_names = ['get', 'post', 'head', ]
