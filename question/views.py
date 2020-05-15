@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, DetailView, CreateView, View
 from django.db.models import Q, Count, F
 from django.core.paginator import Paginator
+from django.core.mail import send_mail
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
@@ -12,6 +13,7 @@ from .models import Questions, Tag, Answer
 from .form import QuestionForm, AnswerForm
 from .serializers import (QuestionsListSerializer, AnswerSerializer,
                           QuestionDetailSerializer, AnswerCreteSerializer)
+from hasker.hasker.settings import HOST_MAIL
 
 
 class QuestionMixin:
@@ -102,12 +104,19 @@ class QuestionDetail(DetailView, QuestionMixin):
 
         form = AnswerForm(request.POST)
         if form.is_valid():
+            question = Questions.objects.get(id=kwargs['id'])
             Answer.objects.create(
                 text=form.cleaned_data['text'],
                 author=request.user,
-                question=Questions.objects.get(id=kwargs['id'])
+                question=question
             )
-            redirect(request.path)
+            try:
+                send_mail(f'Hi {request.user}. User {question.author} answered the question',
+                          form.cleaned_data['text'],
+                          HOST_MAIL,
+                          [question.author.email],)
+            except Exception as e:
+                pass
         return redirect(request.path)
 
 
