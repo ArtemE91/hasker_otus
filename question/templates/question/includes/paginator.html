@@ -1,3 +1,4 @@
+{% if page_obj.paginator.page_range|length > 1 %}
 <nav aria-label="Page navigation example">
     <ul class="pagination">
     {% if page_obj.has_previous %}
@@ -35,3 +36,4 @@
     {% endif %}
   </ul>
 </nav>
+{% endif %}

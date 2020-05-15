@@ -6,6 +6,7 @@ from django.db.models import Q, Count, F
 from django.core.paginator import Paginator
 
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Questions, Tag, Answer
 from .form import QuestionForm, AnswerForm
@@ -14,7 +15,7 @@ from .serializers import (QuestionsListSerializer, AnswerSerializer,
 
 
 class QuestionMixin:
-    paginate_by = 20
+    paginate_by = 2
 
     class Meta:
         abstract: True
@@ -40,6 +41,7 @@ class QuestionList(ListView, QuestionMixin):
     model = Questions
     template_name = 'question/question_list.html'
     paginate_by = 30
+    sort_by_date = False
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,8 +58,11 @@ class QuestionList(ListView, QuestionMixin):
         elif question:
             queryset = queryset.filter(Q(title__contains=question) | Q(text__contains=question))
 
-        queryset = self.sort_by_like(queryset)
-        return queryset
+        if not self.sort_by_date:
+            queryset = self.sort_by_like(queryset)
+            return queryset
+
+        return queryset.order_by("date_create")
 
 
 class TagDetail(DetailView, QuestionMixin):
@@ -174,6 +179,7 @@ class QuestionsViewSet(QAMixin, ModelViewSet):
         'retrieve': QuestionDetailSerializer,
     }
     http_method_names = ['get', 'post', 'head']
+    permission_classes = [IsAuthenticated]
 
 
 class AnswerViewSet(QAMixin, ModelViewSet):
@@ -183,3 +189,4 @@ class AnswerViewSet(QAMixin, ModelViewSet):
         'create': AnswerCreteSerializer,
     }
     http_method_names = ['get', 'post', 'head', ]
+    permission_classes = [IsAuthenticated]

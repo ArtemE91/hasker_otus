@@ -22,7 +22,7 @@
     <div class="container-xl">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="col-md-2">
-                <a class="navbar-brand" href="{% url 'question_list' %}">Hasker</a>
+                <a class="navbar-brand" href="{% url 'question_list'%}">Hasker</a>
             </div>
             <div class="col-md-4"></div>
              <form action="{% url 'search' %}" method="get" class="search form-inline col-md-4">
@@ -49,15 +49,8 @@
                 {% endblock %}
             </div>
             <div class="col-4 flex-column mt-5">
-                {% if user.is_authenticated %}
-                <div class="row mb-2">
-                    <a class="btn btn-primary text-white col-11" href="{% url 'question_create' %}">Ask</a>
-                </div>
-                {% endif %}
-                <div class="row mr-4">
                     {% block populate %}
                     {% endblock %}
-                </div>
             </div>
         </div>
     </div>

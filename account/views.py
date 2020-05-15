@@ -2,7 +2,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm
 from django.views.generic import CreateView, DetailView, UpdateView
 from django.urls import reverse_lazy
-from requests import Response
 
 from rest_framework import viewsets
 from rest_framework.permissions import (BasePermission, SAFE_METHODS)
@@ -35,6 +34,10 @@ class AccountEditView(UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class AccountDetailView(DetailView):

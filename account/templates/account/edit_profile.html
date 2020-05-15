@@ -5,23 +5,37 @@
     {% csrf_token %}
     <div class="card col-8 offset-md-3 mt-4">
         <div class="card-body">
-            <h4>Settings Profile</h4>
-            {% for field in form %}
-            <div class="form-group">
-                {% if field.errors %}
-                    <div class="alert alert-danger">
-                        {{ field.errors }}
-                    </div>
-                {% endif %}
+            <h4 class="card-title">Settings Profile</h4>
 
-                {{ field.label }}
-                {{ field }}
+            {% if object.errors %}
+                <div class="alert alert-danger">
+                    {{ object.errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group row">
+                <label class="col-3 col-form-label">Email</label>
+                <div class="col-9">
+                    <input type="email" name="email" id="id_email" class="form-control" value="{{ object.email }}">
+                </div>
             </div>
-            {% endfor %}
+            <div class="form-group row">
+                <label class="col-3 col-form-label">Avatar</label>
+                <div class="col-9 media">
+                    <img src="{{ object.get_avatar}}" width="200" height="200" class="mr-3">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-3 col-form-label">New avatar</label>
+                <div class="col-9">
+                    <input type="file" name="avatar" id="id_avatar">
+                </div>
+            </div>
             <div class="d-flex justify-content-end mt-2">
                 <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </div>
     </div>
 </form>
+
 {% endblock %}

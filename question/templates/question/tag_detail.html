@@ -16,10 +16,17 @@
 {% endblock %}
 
 {% block populate %}
-<div class="d-flex justify-content-center col-11"><h4>Trending</h4></div>
-    <div class="list-group">
-        {% for question in populate_q.all %}
-            {% include 'question/includes/populate_question.html' %}
-        {% endfor %}
-    </div>
+{% if user.is_authenticated %}
+<div class="row mb-2">
+    <a class="btn btn-primary text-white col-11" href="{% url 'question_create' %}">Ask</a>
+</div>
+{% endif %}
+<div class="row mr-4">
+    <div class="d-flex justify-content-center col-11"><h4>Trending</h4></div>
+        <div class="list-group">
+            {% for question in populate_q.all %}
+                {% include 'question/includes/populate_question.html' %}
+            {% endfor %}
+        </div>
+</div>
 {% endblock %}

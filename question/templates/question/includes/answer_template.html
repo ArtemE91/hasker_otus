@@ -11,7 +11,7 @@
              <small>Date create: {{ answer.date_create }}</small>
              <small>
                  <img src="{{ answer.author.get_avatar}}" width="25" height="25" class="mr-3">
-                 Author: {{ answer.author }}
+                 {{ answer.author }}
              </small>
         </div>
          {% if user.is_authenticated %}

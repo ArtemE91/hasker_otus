@@ -6,6 +6,7 @@ from .router import router
 
 urlpatterns = [
     path('', QuestionList.as_view(), name='question_list'),
+    path('new/', QuestionList.as_view(sort_by_date=True), name='question_list_new'),
     path('question/<int:id>/', QuestionDetail.as_view(), name='question_detail'),
     path('question/create/', QuestionAddView.as_view(), name='question_create'),
     path('likedis/<int:id>/<str:type>/<str:action>/', ChangeLikeDisView.as_view(), name='like_dis'),
