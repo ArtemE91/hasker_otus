@@ -4,10 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import ListView, DetailView, CreateView, View
 from django.db.models import Q, Count, F
 from django.core.paginator import Paginator
-from rest_framework.decorators import action
 
 from rest_framework.viewsets import ModelViewSet
-from rest_framework import generics
 
 from .models import Questions, Tag, Answer
 from .form import QuestionForm, AnswerForm

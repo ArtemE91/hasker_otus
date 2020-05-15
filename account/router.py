@@ -3,4 +3,4 @@ from .views import AccountViewSet
 
 router = DefaultRouter(trailing_slash=True)
 
-router.register('accounts', AccountViewSet, basename='accounts')
+router.register('', AccountViewSet, basename='accounts')

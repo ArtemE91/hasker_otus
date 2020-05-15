@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.shortcuts import reverse
 
-from hasker.hasker.settings import MEDIA_URL
+MEDIA_URL = '/media/'
 
 
 def user_directory_path(instance, filename):

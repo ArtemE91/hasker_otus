@@ -37,13 +37,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'account',
     'question',
+
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_auth',
-    # 'allauth',
-    # 'rest_framework.authtoken',
+
+    'django.contrib.sites',
+    'allauth',
+    'rest_auth.registration',
 ]
 
 MIDDLEWARE = [
@@ -58,13 +61,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hasker.urls'
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework.authentication.TokenAuthentication',
-#     ),
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated', )
-# }
 
 TEMPLATES = [
     {

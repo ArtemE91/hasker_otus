@@ -19,9 +19,3 @@ class AccountUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = ['email', 'avatar']
-
-
-class AccountLoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Account
-        fields = ['username', 'password']
